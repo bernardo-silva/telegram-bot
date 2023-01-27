@@ -19,6 +19,7 @@ def enfs():
 
     if datetime.now().hour > 14:
         weekday += 1
+        weekday %= 7
         ementa = ["Amanhã:"]
 
     if weekday > 4:
