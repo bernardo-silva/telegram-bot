@@ -80,8 +80,8 @@ def main():
 
     application = Application.builder().token(token).build()
 
-    esperanto_handler = CommandHandler("esperanto", send_esperanto)
-    application.add_handler(esperanto_handler)
+    # esperanto_handler = CommandHandler("esperanto", send_esperanto)
+    # application.add_handler(esperanto_handler)
 
     enfs_handler = CommandHandler("enfs", send_enfs)
     application.add_handler(enfs_handler)
