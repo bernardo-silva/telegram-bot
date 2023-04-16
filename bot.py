@@ -6,6 +6,7 @@ from translate import translate
 from pydub import AudioSegment
 import tempfile
 from urllib.request import urlopen
+import requests
 
 
 def escape_chars(text):
@@ -74,6 +75,12 @@ async def send_translate(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await replied_to.reply_text(message, reply_to_message_id=replied_to.message_id)
 
 
+async def send_dadjoke(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    message = requests.get("https://icanhazdadjoke.com/",
+                           headers={"Accept": "text/plain"}).text
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+
+
 def main():
     with open("token.txt", "r") as f:
         token = f.read().strip()
@@ -88,6 +95,9 @@ def main():
 
     translate_handler = CommandHandler("translate", send_translate)
     application.add_handler(translate_handler)
+
+    dadjoke_handler = CommandHandler("dadjoke", send_dadjoke)
+    application.add_handler(dadjoke_handler)
 
     application.run_polling()
 
