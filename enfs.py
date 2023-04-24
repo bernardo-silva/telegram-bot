@@ -32,7 +32,12 @@ def enfs():
         for f in food:
             if ft in f:
                 ementa.append(f"{ft}: {f.split(ft)[0].strip()}")
-    return "\n".join(ementa)
+                    
+    message = "\n".join(ementa)
+    if "salada russa" in message.lower():
+        message += "\nA Salada Russa está servida\n"
+
+    return  message
 
 
 
