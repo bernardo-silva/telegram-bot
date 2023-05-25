@@ -3,6 +3,8 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 from esperanto import esperanto
 from enfs import enfs
 from translate import translate
+from mbway import mbway
+from datetime import datetime
 from pydub import AudioSegment
 import tempfile
 from urllib.request import urlopen
@@ -81,6 +83,10 @@ async def send_dadjoke(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = message.encode("ISO-8859-1").decode()
     await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
+async def send_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    message = mbway(datetime.now())
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+
 
 def main():
     with open("token.txt", "r") as f:
@@ -99,6 +105,9 @@ def main():
 
     dadjoke_handler = CommandHandler("dadjoke", send_dadjoke)
     application.add_handler(dadjoke_handler)
+
+    mbway_handler = CommandHandler("mbway", send_mbway)
+    application.add_handler(mbway_handler)
 
     application.run_polling()
 
