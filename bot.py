@@ -78,9 +78,10 @@ async def send_translate(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def send_dadjoke(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    message = requests.get("https://icanhazdadjoke.com/",
-                           headers={"Accept": "text/plain"}).text
-    message = message.encode("ISO-8859-1").decode()
+    message = f"Já chega, {update.message.from_user.first_name}"
+    #message = requests.get("https://icanhazdadjoke.com/",
+                           #headers={"Accept": "text/plain"}).text
+    #message = message.encode("ISO-8859-1").decode()
     await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
 async def send_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
