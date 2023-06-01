@@ -69,12 +69,19 @@ async def send_translate(update: Update, context: ContextTypes.DEFAULT_TYPE):
         update.message.reply_text("You have to reply to a message for me to translate",
                                   reply_to_message_id=update.message.message_id)
         return
-    if context.args:
-        message = translate(replied_to.text, context.args[0])
-    else:
-        message = translate(replied_to.text)
 
-    await replied_to.reply_text(message, reply_to_message_id=replied_to.message_id)
+    text = ""
+    if replied_to.text is not None and replied_to.text:
+        text = replied_to.text
+    elif replied_to.caption is not None and replied_to.caption:
+        text = replied_to.caption
+
+    message = ""
+    if text:
+        message = translate(text, context.args[0] if context.args else None)
+
+    await replied_to.reply_text(message or "Invalid message",
+                                reply_to_message_id=replied_to.message_id)
 
 
 async def send_dadjoke(update: Update, context: ContextTypes.DEFAULT_TYPE):
