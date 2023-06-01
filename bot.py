@@ -78,7 +78,10 @@ async def send_translate(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     message = ""
     if text:
-        message = translate(text, context.args[0] if context.args else None)
+        if context.args:
+            message = translate(text, context.args[0])
+        else:
+            message = translate(text)
 
     await replied_to.reply_text(message or "Invalid message",
                                 reply_to_message_id=replied_to.message_id)
