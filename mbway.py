@@ -18,14 +18,16 @@ def mbway(data):
 
     premio_diario_str = ""
     for data_indice in premio_diario.index:
-        premio_diario_str += f"Diário: {data_indice.day}/{data_indice.month} às {data_indice.hour}h{data_indice.minute} ({int(premio_diario.loc[data_indice].valor)}€) {premio_diario.loc[data_indice].parceiro} \n"
+        premio_diario_str += f"Diário: {data_indice.day}/{data_indice.month} às {data_indice.hour}h" 
+        premio_diario_str += f"{data_indice.minute:02} ({int(premio_diario.loc[data_indice].valor)}€) "
+        premio_diario_str += f"{premio_diario.loc[data_indice].parceiro} \n"
 
     data_semanal = premio_semanal.index[0]
     data_mensal = premio_mensal.index[0]
 
     return premio_diario_str + \
-    f"Semanal: {data_semanal.day}/{data_semanal.month} às {data_semanal.hour}h{data_semanal.minute} (100€) \n"\
-    f"Mensal:  {data_mensal.day}/{data_mensal.month} às {data_mensal.hour}h{data_mensal.minute}  (200€)"
+    f"Semanal: {data_semanal.day}/{data_semanal.month} às {data_semanal.hour}h{data_semanal.minute:02} (100€) \n"\
+    f"Mensal:  {data_mensal.day}/{data_mensal.month} às {data_mensal.hour}h{data_mensal.minute:02}  (200€)"
 
 
 if __name__ == "__main__":
