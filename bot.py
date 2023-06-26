@@ -89,14 +89,31 @@ async def send_translate(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def send_dadjoke(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = f"Já chega, {update.message.from_user.first_name}"
-    #message = requests.get("https://icanhazdadjoke.com/",
-                           #headers={"Accept": "text/plain"}).text
+    # message = requests.get("https://icanhazdadjoke.com/",
+    # headers={"Accept": "text/plain"}).text
     #message = message.encode("ISO-8859-1").decode()
     await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+
 
 async def send_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = mbway(datetime.now())
     await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+
+
+async def setup_notify_mbway(update: Update, context:
+                             ContextTypes.DEFAULT_TYPE):
+    chat_id = update.effective_chat.id
+    if context.job_queue.get_jobs_by_name(str(chat_id)):
+        message = "Notificações já ativadas."
+        await context.bot.send_message(chat_id=chat_id, text=message)
+        return
+
+    message = "Notificações diárias de MbWay ativadas."
+    await context.bot.send_message(chat_id=chat_id, text=message)
+
+    t = datetime.time(0, 00, 10, 000000)
+    context.job_queue.run_daily(send_mbway, t, chat_id=chat_id,
+                                name=str(chat_id))
 
 
 def main():
@@ -119,6 +136,9 @@ def main():
 
     mbway_handler = CommandHandler("mbway", send_mbway)
     application.add_handler(mbway_handler)
+
+    mbway_notify_handler = CommandHandler("mbwaynotify", setup_notify_mbway)
+    application.add_handler(mbway_notify_handler)
 
     application.run_polling()
 
