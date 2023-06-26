@@ -11,7 +11,7 @@ import tempfile
 # import requests
 import logging
 
-logging.basicConfig(filename='bot_log.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename='bot_log.log', encoding='utf-8', level=logging.INFO)
 
 def escape_chars(text):
     reserved_chars = '''?&|!{}[]()^~:\\"'+-.'''
