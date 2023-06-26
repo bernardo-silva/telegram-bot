@@ -129,8 +129,8 @@ def main():
     with open("token.txt", "r") as f:
         token = f.read().strip()
     
-    persistence = PicklePersistence(filename='bot_data')
-    application = Application.builder().token(token).persitence(persistence).build()
+    persistence = PicklePersistence(filepath='bot_data')
+    application = Application.builder().token(token).persistence(persistence).build()
 
     # esperanto_handler = CommandHandler("esperanto", send_esperanto)
     # application.add_handler(esperanto_handler)
