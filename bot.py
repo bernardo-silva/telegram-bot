@@ -118,7 +118,7 @@ async def setup_notify_mbway(update: Update, context:
 
     t = datetime.time(0, 00, 10, 000000)
     job = context.job_queue.run_daily(send_mbway, t, chat_id=chat_id,
-                                name=str(chat_id))
+                                      days=tuple(range(7)), name=str(chat_id))
 
     message = "Notificações diárias de MbWay ativadas."
     await context.bot.send_message(chat_id=chat_id, text=message)
