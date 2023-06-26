@@ -105,7 +105,7 @@ async def send_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def setup_notify_mbway(update: Update, context:
                              ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
-    logging.log(logging.INFO, f"Setting up notifications for {chat_id}")
+    logger.info(f"Setting up notifications for {chat_id}")
     jobs_in_queue = context.job_queue.get_jobs_by_name(str(chat_id))
     logging.log(logging.INFO, f"Jobs in queue: {jobs_in_queue}")
 
@@ -122,7 +122,7 @@ async def setup_notify_mbway(update: Update, context:
     message = "Notificações diárias de MbWay ativadas."
     await context.bot.send_message(chat_id=chat_id, text=message)
 
-    logging.log(logging.INFO, f"Job created: {job}")
+    logger.info(f"Job created: {job}")
 
 def main():
     with open("token.txt", "r") as f:
