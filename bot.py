@@ -5,10 +5,10 @@ from enfs import enfs
 from translate import translate
 from mbway import mbway
 import datetime
-from pydub import AudioSegment
+# from pydub import AudioSegment
 import tempfile
-from urllib.request import urlopen
-import requests
+# from urllib.request import urlopen
+# import requests
 import logging
 
 logger = logging.getLogger("bot")
@@ -21,43 +21,43 @@ def escape_chars(text):
     return text.translate(result_mapping)
 
 
-async def send_esperanto(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    data = esperanto()
-    month, day, year = data["date"].split("-")
-    date = "-".join([day, month, year])
+# async def send_esperanto(update: Update, context: ContextTypes.DEFAULT_TYPE):
+#     data = esperanto()
+#     month, day, year = data["date"].split("-")
+#     date = "-".join([day, month, year])
 
-    message = f"""Esperanto Word of the Day ({date}):
-*{data["word"]}*
-Word type: {data["wordtype"]}
-Translation: *{data["translation"]}*
-Example phrase: {data["fnphrase"]}
-Example phrase translation: {data["enphrase"]}
-"""
-    message = escape_chars(message)
+#     message = f"""Esperanto Word of the Day ({date}):
+# *{data["word"]}*
+# Word type: {data["wordtype"]}
+# Translation: *{data["translation"]}*
+# Example phrase: {data["fnphrase"]}
+# Example phrase translation: {data["enphrase"]}
+# """
+#     message = escape_chars(message)
 
-    wordmp3 = urlopen(data["wordsound"]).read()
-    with tempfile.NamedTemporaryFile(delete=True) as f:
-        f.write(wordmp3)
-        AudioSegment.from_mp3(f.name).export("word_audio.ogg", format="ogg")
+#     wordmp3 = urlopen(data["wordsound"]).read()
+#     with tempfile.NamedTemporaryFile(delete=True) as f:
+#         f.write(wordmp3)
+#         AudioSegment.from_mp3(f.name).export("word_audio.ogg", format="ogg")
 
-    phrasemp3 = urlopen(data["phrasesound"]).read()
-    with tempfile.NamedTemporaryFile(delete=True) as f:
-        f.write(phrasemp3)
-        AudioSegment.from_mp3(f.name).export("phrase_audio.ogg", format="ogg")
+#     phrasemp3 = urlopen(data["phrasesound"]).read()
+#     with tempfile.NamedTemporaryFile(delete=True) as f:
+#         f.write(phrasemp3)
+#         AudioSegment.from_mp3(f.name).export("phrase_audio.ogg", format="ogg")
 
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id, text=message, parse_mode='MarkdownV2')
+#     await context.bot.send_message(
+#         chat_id=update.effective_chat.id, text=message, parse_mode='MarkdownV2')
 
-    with open("word_audio.ogg", "rb") as f:
-        await context.bot.send_voice(chat_id=update.effective_chat.id,
-                                     voice=f,
-                                     caption="Word pronounciation")
+#     with open("word_audio.ogg", "rb") as f:
+#         await context.bot.send_voice(chat_id=update.effective_chat.id,
+#                                      voice=f,
+#                                      caption="Word pronounciation")
 
-    with open("phrase_audio.ogg", "rb") as f:
-        await context.bot.send_voice(chat_id=update.effective_chat.id,
-                                     voice=f,
-                                     caption="Phrase pronounciation",
-                                     filename="phrase")
+#     with open("phrase_audio.ogg", "rb") as f:
+#         await context.bot.send_voice(chat_id=update.effective_chat.id,
+#                                      voice=f,
+#                                      caption="Phrase pronounciation",
+#                                      filename="phrase")
 
 
 async def send_enfs(update: Update, context: ContextTypes.DEFAULT_TYPE):
