@@ -99,9 +99,13 @@ async def send_dadjoke(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def send_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print(context.user_data, type(context.user_data))
     message = mbway(datetime.datetime.now())
     await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+
+async def send_mbway_notification(context: ContextTypes.DEFAULT_TYPE):
+    job = context.job
+    message = mbway(datetime.datetime.now())
+    await context.bot.send_message(chat_id=job.chat_id, text=message)
 
 
 async def setup_notify_mbway(update: Update, context:
@@ -118,7 +122,7 @@ async def setup_notify_mbway(update: Update, context:
 
 
     t = datetime.time(0, 00, 10, 000000, tzinfo=datetime.timezone(datetime.timedelta(hours=1)))
-    job = context.job_queue.run_daily(send_mbway, t, chat_id=chat_id,
+    job = context.job_queue.run_daily(send_mbway_notification, t, chat_id=chat_id,
                                       days=tuple(range(7)), name=str(chat_id))
 
     context.bot_data["jobs"]["mbway"].append(chat_id)
@@ -139,7 +143,7 @@ async def restore_jobs(context: ContextTypes.DEFAULT_TYPE):
 
     for chat_id in context.bot_data["jobs"]["mbway"]:
         t = datetime.time(0, 00, 10, 000000, tzinfo=datetime.timezone(datetime.timedelta(hours=1)))
-        job = context.job_queue.run_daily(send_mbway, t, chat_id=chat_id,
+        job = context.job_queue.run_daily(send_mbway_notification, t, chat_id=chat_id,
                                           days=tuple(range(7)), name=str(chat_id))
         logging.info(f"Job created: {job}")
     
