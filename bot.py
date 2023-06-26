@@ -121,7 +121,7 @@ async def setup_notify_mbway(update: Update, context:
     job = context.job_queue.run_daily(send_mbway, t, chat_id=chat_id,
                                       days=tuple(range(7)), name=str(chat_id))
 
-    context.user_data["jobs"]["mbway"].append(chat_id)
+    context.bot_data["jobs"]["mbway"].append(chat_id)
 
     message = "Notificações diárias de MbWay ativadas."
     await context.bot.send_message(chat_id=chat_id, text=message)
@@ -129,15 +129,15 @@ async def setup_notify_mbway(update: Update, context:
     logging.info(f"Job created: {job}")
 
 async def restore_jobs(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if context.user_data.get("jobs") is None:
-        context.user_data["jobs"] = {"mbway": []}
+    if context.bot_data.get("jobs") is None:
+        context.bot_data["jobs"] = {"mbway": []}
         return
 
-    if context.user_data["jobs"].get("mbway") is None:
-        context.user_data["jobs"]["mbway"] = []
+    if context.bot_data["jobs"].get("mbway") is None:
+        context.bot_data["jobs"]["mbway"] = []
         return
 
-    for chat_id in context.user_data["jobs"]["mbway"]:
+    for chat_id in context.bot_data["jobs"]["mbway"]:
         t = datetime.time(0, 00, 10, 000000)
         job = context.job_queue.run_daily(send_mbway, t, chat_id=chat_id,
                                           days=tuple(range(7)), name=str(chat_id))
