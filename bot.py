@@ -117,7 +117,7 @@ async def setup_notify_mbway(update: Update, context:
         return
 
 
-    t = datetime.time(0, 00, 10, 000000)
+    t = datetime.time(0, 00, 10, 000000, tzinfo=datetime.timezone(datetime.timedelta(hours=1)))
     job = context.job_queue.run_daily(send_mbway, t, chat_id=chat_id,
                                       days=tuple(range(7)), name=str(chat_id))
 
@@ -138,7 +138,7 @@ async def restore_jobs(context: ContextTypes.DEFAULT_TYPE):
         return
 
     for chat_id in context.bot_data["jobs"]["mbway"]:
-        t = datetime.time(0, 00, 10, 000000)
+        t = datetime.time(0, 00, 10, 000000, tzinfo=datetime.timezone(datetime.timedelta(hours=1)))
         job = context.job_queue.run_daily(send_mbway, t, chat_id=chat_id,
                                           days=tuple(range(7)), name=str(chat_id))
         logging.info(f"Job created: {job}")
