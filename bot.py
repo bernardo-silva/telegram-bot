@@ -152,13 +152,7 @@ def main():
     persistence = PicklePersistence(filepath='bot_data')
     application = Application.builder().token(token).persistence(persistence).build()
 
-<<<<<<< HEAD
     application.job_queue.run_once(restore_jobs, 0)
-=======
-    print(type(application.user_data))
-    #restore_jobs(application)
-
->>>>>>> c611ae06f488f132b0f835a8f6f6ae3b4d8600a6
 
     # esperanto_handler = CommandHandler("esperanto", send_esperanto)
     # application.add_handler(esperanto_handler)
