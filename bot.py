@@ -4,7 +4,7 @@ from esperanto import esperanto
 from enfs import enfs
 from translate import translate
 from mbway import mbway
-from datetime import datetime
+import datetime
 from pydub import AudioSegment
 import tempfile
 from urllib.request import urlopen
@@ -98,7 +98,7 @@ async def send_dadjoke(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def send_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    message = mbway(datetime.now())
+    message = mbway(datetime.datetime.now())
     await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
 
@@ -114,12 +114,13 @@ async def setup_notify_mbway(update: Update, context:
         await context.bot.send_message(chat_id=chat_id, text=message)
         return
 
-    message = "Notificações diárias de MbWay ativadas."
-    await context.bot.send_message(chat_id=chat_id, text=message)
 
     t = datetime.time(0, 00, 10, 000000)
     job = context.job_queue.run_daily(send_mbway, t, chat_id=chat_id,
                                 name=str(chat_id))
+
+    message = "Notificações diárias de MbWay ativadas."
+    await context.bot.send_message(chat_id=chat_id, text=message)
 
     logging.log(logging.INFO, f"Job created: {job}")
 
