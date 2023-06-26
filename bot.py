@@ -128,7 +128,7 @@ async def setup_notify_mbway(update: Update, context:
 
     logging.info(f"Job created: {job}")
 
-def restore_jobs(context: ContextTypes.DEFAULT_TYPE):
+async def restore_jobs(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.user_data.get("jobs") is None:
         context.user_data["jobs"] = {"mbway": []}
         return
