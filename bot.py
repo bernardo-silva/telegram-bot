@@ -1,5 +1,6 @@
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import PicklePersistence
 from esperanto import esperanto
 from enfs import enfs
 from translate import translate
@@ -127,8 +128,9 @@ async def setup_notify_mbway(update: Update, context:
 def main():
     with open("token.txt", "r") as f:
         token = f.read().strip()
-
-    application = Application.builder().token(token).build()
+    
+    persistence = PicklePersistence(filename='bot_data')
+    application = Application.builder().token(token).persitence(persistence).build()
 
     # esperanto_handler = CommandHandler("esperanto", send_esperanto)
     # application.add_handler(esperanto_handler)
