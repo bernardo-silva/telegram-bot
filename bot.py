@@ -9,7 +9,9 @@ from pydub import AudioSegment
 import tempfile
 from urllib.request import urlopen
 import requests
+import logging
 
+logger = logging.getLogger("bot")
 
 def escape_chars(text):
     reserved_chars = '''?&|!{}[]()^~:\\"'+-.'''
@@ -103,7 +105,11 @@ async def send_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def setup_notify_mbway(update: Update, context:
                              ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
-    if context.job_queue.get_jobs_by_name(str(chat_id)):
+    logging.log(logging.INFO, f"Setting up notifications for {chat_id}")
+    jobs_in_queue = context.job_queue.get_jobs_by_name(str(chat_id))
+    logging.log(logging.INFO, f"Jobs in queue: {jobs_in_queue}")
+
+    if jobs_in_queue:
         message = "Notificações já ativadas."
         await context.bot.send_message(chat_id=chat_id, text=message)
         return
@@ -112,9 +118,10 @@ async def setup_notify_mbway(update: Update, context:
     await context.bot.send_message(chat_id=chat_id, text=message)
 
     t = datetime.time(0, 00, 10, 000000)
-    context.job_queue.run_daily(send_mbway, t, chat_id=chat_id,
+    job = context.job_queue.run_daily(send_mbway, t, chat_id=chat_id,
                                 name=str(chat_id))
 
+    logging.log(logging.INFO, f"Job created: {job}")
 
 def main():
     with open("token.txt", "r") as f:
