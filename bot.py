@@ -11,7 +11,7 @@ import tempfile
 # import requests
 import logging
 
-logger = logging.getLogger("bot")
+logging.basicConfig(filename='bot_log.log', encoding='utf-8', level=logging.DEBUG)
 
 def escape_chars(text):
     reserved_chars = '''?&|!{}[]()^~:\\"'+-.'''
@@ -105,9 +105,9 @@ async def send_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def setup_notify_mbway(update: Update, context:
                              ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
-    logger.info(f"Setting up notifications for {chat_id}")
+    logging.info(f"Setting up notifications for {chat_id}")
     jobs_in_queue = context.job_queue.get_jobs_by_name(str(chat_id))
-    logging.log(logging.INFO, f"Jobs in queue: {jobs_in_queue}")
+    logging.info(f"Jobs in queue: {jobs_in_queue}")
 
     if jobs_in_queue:
         message = "Notificações já ativadas."
@@ -122,7 +122,7 @@ async def setup_notify_mbway(update: Update, context:
     message = "Notificações diárias de MbWay ativadas."
     await context.bot.send_message(chat_id=chat_id, text=message)
 
-    logger.info(f"Job created: {job}")
+    logging.info(f"Job created: {job}")
 
 def main():
     with open("token.txt", "r") as f:
