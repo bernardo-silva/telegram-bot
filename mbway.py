@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def entry_to_string(data: datetime) -> str:
-    return f"{data.day}/{data.month} às {data.hour}h{data.minute:02}"
+    return f"{data.day:02}/{data.month:02} às {data.hour:02}h{data.minute:02}"
 
 
 def mbway(data):
@@ -33,6 +33,17 @@ def mbway(data):
     f"Semanal: " + entry_to_string(data_semanal) + f" (100€) \n"\
     f"Mensal:  " + entry_to_string(data_mensal) + f" (200€)"
 
+def fetch_prize_table():
+    dataframes_mbway = pd.read_html("https://www.mbway.pt/challenge-regulamento/")
+    premios = dataframes_mbway[6]
+    premios = premios.drop(5, axis=1)
+    premios.columns = ["tipo", "dia", "hora", "valor", "parceiro"]
+    premios = premios.drop(0)
+    premios["data"] = premios.dia+" "+premios.hora
+    premios = premios.drop(["dia", "hora"], axis=1)
+    premios.data = pd.to_datetime(premios.data, dayfirst=True)
+    premios.to_csv("tabela_premios.csv", index=False)
 
 if __name__ == "__main__":
+    fetch_prize_table()
     print(mbway(datetime.now()))

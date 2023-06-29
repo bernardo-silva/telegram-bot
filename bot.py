@@ -4,7 +4,7 @@ from telegram.ext import PicklePersistence
 from esperanto import esperanto
 from enfs import enfs
 from translate import translate
-from mbway import mbway
+from mbway import mbway, fetch_prize_table
 import datetime
 # from pydub import AudioSegment
 import tempfile
@@ -104,7 +104,15 @@ async def send_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def send_mbway_notification(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
-    message = mbway(datetime.datetime.now())
+    
+    message = ""
+    try:
+        fetch_prize_table()
+    except Exception as e:
+        message = "Erro a carregar tabela de prémios.\n"
+        logging.error(f"Error fetching prize table: {e}")
+    
+    message += mbway(datetime.datetime.now())
     await context.bot.send_message(chat_id=job.chat_id, text=message)
 
 
