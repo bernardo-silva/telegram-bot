@@ -99,7 +99,12 @@ async def send_dadjoke(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def send_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    message = mbway(datetime.datetime.now())
+    date = datetime.datetime.now()
+    if context.args and context.args[0].lower() in ["amanhã", "amanha", "tomorrow"]:
+        date += datetime.timedelta(days=1)
+        date.replace(hour=0, minute=0, second=0, microsecond=0)
+
+    message = mbway(date)
     await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
 async def send_mbway_notification(context: ContextTypes.DEFAULT_TYPE):
