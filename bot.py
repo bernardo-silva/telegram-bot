@@ -86,6 +86,9 @@ async def send_translate(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             message = translate(text)
 
+    if "Hoje:" in text:
+        message = f"{update.message.from_user.first_name}, outra vez?\n\n" + message
+
     await replied_to.reply_text(message or "Invalid message",
                                 reply_to_message_id=replied_to.message_id)
 
