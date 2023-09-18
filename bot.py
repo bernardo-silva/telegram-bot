@@ -161,7 +161,7 @@ async def restore_jobs(context: ContextTypes.DEFAULT_TYPE):
         t = datetime.time(0, 00, 10, 000000, tzinfo=datetime.timezone(datetime.timedelta(hours=1)))
         job = context.job_queue.run_daily(send_mbway_notification, t, chat_id=chat_id,
                                           days=tuple(range(7)), name=str(chat_id))
-        logging.info(f"Job created: {job}")
+        logging.info(f"Job created: {job} for chat {chat_id}")
     
 
 
