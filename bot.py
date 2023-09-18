@@ -78,6 +78,8 @@ async def send_translate(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = replied_to.text
     elif replied_to.caption is not None and replied_to.caption:
         text = replied_to.caption
+    elif replied_to.question is not None and replied_to.question:
+        text = replied_to.question
 
     message = ""
     if text:
