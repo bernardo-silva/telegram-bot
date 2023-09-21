@@ -110,7 +110,8 @@ async def send_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
         date.replace(hour=0, minute=0, second=0, microsecond=0)
 
     message = mbway(date)
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+    await context.bot.send_message(chat_id=update.effective_chat.id,
+                                   text=message, parse_mode='MarkdownV2')
 
 async def send_mbway_notification(context: ContextTypes.DEFAULT_TYPE):
     job = context.job

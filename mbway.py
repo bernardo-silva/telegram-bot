@@ -3,7 +3,11 @@ import pandas as pd
 
 
 def entry_to_string(data: datetime, valor: int, parceiro: str) -> str:
-    return f"{data.hour:02}h{data.minute:02} {valor}€ {parceiro}\n"
+    text = f"{data.hour:02}h{data.minute:02} {valor}€ {parceiro}"
+    now = datetime.now()
+    if data.day == now.day and data.month == now.month:
+        text = f"**{text}**"
+    return text + "\n"
 
 
 def mbway(data):
