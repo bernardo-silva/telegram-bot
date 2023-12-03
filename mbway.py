@@ -69,7 +69,7 @@ def mbway(data):
 
 def fetch_prize_table():
     dataframes_mbway = pd.read_html("https://www.mbway.pt/challenge-regulamento/")
-    premios = dataframes_mbway[5]
+    premios = dataframes_mbway[4]
     premios = premios.drop(5, axis=1)
     premios.columns = ["tipo", "dia", "hora", "valor", "parceiro"]
     premios = premios.drop(0)

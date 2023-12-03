@@ -116,6 +116,7 @@ async def send_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
         date = date.replace(hour=0, minute=0, second=0, microsecond=0)
 
     message = mbway(date)
+    message = escape_chars(message)
     await context.bot.send_message(
         chat_id=update.effective_chat.id, text=message, parse_mode="MarkdownV2"
     )
@@ -132,7 +133,10 @@ async def send_mbway_notification(context: ContextTypes.DEFAULT_TYPE):
         logging.error(f"Error fetching prize table: {e}")
 
     message += mbway(datetime.datetime.now())
-    await context.bot.send_message(chat_id=job.chat_id, text=message)
+    message = escape_chars(message)
+    await context.bot.send_message(
+        chat_id=job.chat_id, text=message, parse_mode="MarkdownV2"
+    )
 
 
 async def setup_notify_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -147,7 +151,7 @@ async def setup_notify_mbway(update: Update, context: ContextTypes.DEFAULT_TYPE)
         return
 
     t = datetime.time(
-        0, 00, 10, 000000, tzinfo=datetime.timezone(datetime.timedelta(hours=1))
+        0, 00, 10, 000000, tzinfo=datetime.timezone(datetime.timedelta(hours=0))
     )
     job = context.job_queue.run_daily(
         send_mbway_notification,
@@ -176,7 +180,7 @@ async def restore_jobs(context: ContextTypes.DEFAULT_TYPE):
 
     for chat_id in context.bot_data["jobs"]["mbway"]:
         t = datetime.time(
-            0, 00, 10, 000000, tzinfo=datetime.timezone(datetime.timedelta(hours=1))
+            0, 00, 10, 000000, tzinfo=datetime.timezone(datetime.timedelta(hours=0))
         )
         job = context.job_queue.run_daily(
             send_mbway_notification,
